@@ -520,90 +520,105 @@ src="https://www.facebook.com/tr?id=613723188089930&ev=PageView&noscript=1"
 
 
   <style>
-    body {
-      background-color: #f8f9fa;
-      font-family: sans-serif;
-    }
-    .donation-box {
-      background: #fff;
-      border-radius: 10px;
-      padding: 30px 20px;
-      max-width: 450px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .donation-title {
-      color: #00B050;
-      font-weight: bold;
-      font-size: 20px;
-    }
-    .donation-option {
-      border: 2px solid #00B050;
-      color: #00B050;
-      border-radius: 6px;
-      padding: 10px 0;
-      font-size: 16px;
-      font-weight: 500;
-      background-color: #fff;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-    .donation-option:hover {
-      background-color: #e9f8ee;
-      cursor: pointer;
-    }
-    .donation-option.selected {
-      box-shadow: 0 0 0 2px #00B050 inset;
-    }
-    .special-offer {
-      background-color: #fff3cd !important;
-      color: #000 !important;
-      border: 2px solid #ffc107;
-    }
-  </style>
+  body {
+    background-color: #f8f9fa;
+    font-family: sans-serif;
+  }
+  .donation-box {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px 20px;
+    max-width: 450px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .donation-title {
+    color: #00B050;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  .donation-option {
+    border: 2px solid #00B050;
+    color: #00B050;
+    border-radius: 6px;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .donation-option:hover {
+    background-color: #e9f8ee;
+    cursor: pointer;
+  }
+  .donation-option.selected {
+    box-shadow: 0 0 0 2px #00B050 inset;
+  }
+  .special-offer {
+    background-color: #fff3cd !important;
+    color: #000 !important;
+    border: 2px solid #ffc107;
+  }
+</style>
 
-    <div class="row mt-4 gx-2 gy-2">
-      <div class="col-6"><button class="w-100 donation-option" data-value="10">R$ 10,00</button></div>
-      <div class="col-6"><button class="w-100 donation-option" data-value="15">R$ 15,00</button></div>
-      <div class="col-6"><button class="w-100 donation-option" data-value="25">R$ 25,00</button></div>
-      <div class="col-6"><button class="w-100 donation-option" data-value="30">R$ 30,00</button></div>
+<div class="row mt-4 gx-2 gy-2">
+  <div class="col-6"><button class="w-100 donation-option" data-value="10">R$ 10,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="15">R$ 15,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="25">R$ 25,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="30">R$ 30,00</button></div>
 
-      <!-- Botão R$35 com destaque -->
-      <div class="col-6 text-center">
-        <small class="text-warning fw-semibold d-block mb-1">
-          <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="estrela" width="14" style="margin-top: -2px; margin-right: 4px;">
-          Mais escolhido
-        </small>
-        <button class="w-100 donation-option special-offer" data-value="35">R$ 35,00</button>
-      </div>
-
-      <div class="col-6"><button class="w-100 donation-option" data-value="50">R$ 50,00</button></div>
-      <div class="col-6"><button class="w-100 donation-option" data-value="75">R$ 75,00</button></div>
-      <div class="col-6"><button class="w-100 donation-option" data-value="100">R$ 100,00</button></div>
-      <div class="col-6"><button class="w-100 donation-option" data-value="125">R$ 125,00</button></div>
-      <div class="col-6"><button class="w-100 donation-option" data-value="150">R$ 150,00</button></div>
-    </div>
+  <!-- Botão R$35 com destaque -->
+  <div class="col-6 text-center">
+    <small class="text-warning fw-semibold d-block mb-1">
+      <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="estrela" width="14" style="margin-top: -2px; margin-right: 4px;">
+      Mais escolhido
+    </small>
+    <button class="w-100 donation-option special-offer" data-value="35">R$ 35,00</button>
   </div>
 
-  <!-- Modal Pix -->
-  <div class="modal fade" id="pixModal" tabindex="-1" aria-labelledby="pixModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered text-center">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Pagamento via Pix</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-        </div>
-        <div class="modal-body">
-          <img id="pix-qrcode" src="" alt="QR Code Pix" class="img-fluid mb-3" />
-          <p id="pix-code" style="word-break: break-word;"></p>
-          <button class="btn btn-primary" onclick="copyPixCode()">Copiar código Pix</button>
-        </div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="50">R$ 50,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="75">R$ 75,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="100">R$ 100,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="125">R$ 125,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="150">R$ 150,00</button></div>
+</div>
+</div>
+
+<!-- Modal Pix -->
+<div class="modal fade" id="pixModal" tabindex="-1" aria-labelledby="pixModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered text-center">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Pagamento via Pix</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <div id="pix-qrcode-container" class="mb-3"></div>
+        <p id="pix-code" style="word-break: break-word;"></p>
+        <button class="btn btn-primary" onclick="copyPixCode()">Copiar código Pix</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Scripts -->
-  <script>
+<!-- QRCode lib -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+  // Mostra o modal com QR e código copia-e-cola
+  function showPixModal(payload) {
+    const container = document.getElementById('pix-qrcode-container');
+    container.innerHTML = '';
+    new QRCode(container, { text: payload, width: 256, height: 256 });
+
+    document.getElementById('pix-code').textContent = payload;
+
+    const modal = new bootstrap.Modal(document.getElementById('pixModal'));
+    modal.show();
+  }
+
+  // Chama a Function no Netlify
   async function createPixChargeReal(amount) {
     try {
       const resp = await fetch('/api/pix/emit', {
@@ -617,7 +632,6 @@ src="https://www.facebook.com/tr?id=613723188089930&ev=PageView&noscript=1"
         throw new Error(json.message || 'Falha ao emitir cobrança');
       }
 
-      // Mostra o QR Code e copia-e-cola no modal
       showPixModal(json.data.qrcode);
     } catch (e) {
       console.error(e);
@@ -625,28 +639,24 @@ src="https://www.facebook.com/tr?id=613723188089930&ev=PageView&noscript=1"
     }
   }
 
-  // Captura cliques nos botões de valor
+  // Clique nos botões
   document.addEventListener('click', (ev) => {
     const btn = ev.target.closest('.donation-option[data-value]');
     if (!btn) return;
-
     const amount = Number(btn.getAttribute('data-value'));
     if (!isFinite(amount) || amount <= 0) return;
-
-    createPixChargeReal(amount); // chama a API real
+    createPixChargeReal(amount);
   });
 
-  // Função para copiar o código Pix
-  window.copyPixCode = async function () {
+  // Copiar código Pix
+  function copyPixCode() {
     const text = document.getElementById('pix-code').textContent.trim();
-    try {
-      await navigator.clipboard.writeText(text);
-      alert('Código Pix copiado!');
-    } catch {
-      alert('Não foi possível copiar. Copie manualmente.');
-    }
-  };
+    navigator.clipboard.writeText(text)
+      .then(() => alert('Código Pix copiado!'))
+      .catch(() => alert('Não foi possível copiar automaticamente.'));
+  }
 </script>
+
 
 
   
