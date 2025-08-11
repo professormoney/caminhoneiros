@@ -563,25 +563,25 @@ src="https://www.facebook.com/tr?id=613723188089930&ev=PageView&noscript=1"
 </style>
 
 <div class="row mt-4 gx-2 gy-2">
-  <div class="col-6"><button class="w-100 donation-option" data-value="10">R$ 10,00</button></div>
-  <div class="col-6"><button class="w-100 donation-option" data-value="15">R$ 15,00</button></div>
-  <div class="col-6"><button class="w-100 donation-option" data-value="25">R$ 25,00</button></div>
   <div class="col-6"><button class="w-100 donation-option" data-value="30">R$ 30,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="50">R$ 50,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="75">R$ 75,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="100">R$ 100,00</button></div>
 
-  <!-- Botão R$35 com destaque -->
+  <!-- Botão R$150 com destaque -->
   <div class="col-6 text-center">
     <small class="text-warning fw-semibold d-block mb-1">
       <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="estrela" width="14" style="margin-top: -2px; margin-right: 4px;">
       Mais escolhido
     </small>
-    <button class="w-100 donation-option special-offer" data-value="35">R$ 35,00</button>
+    <button class="w-100 donation-option special-offer" data-value="150">R$ 150,00</button>
   </div>
 
-  <div class="col-6"><button class="w-100 donation-option" data-value="50">R$ 50,00</button></div>
-  <div class="col-6"><button class="w-100 donation-option" data-value="75">R$ 75,00</button></div>
-  <div class="col-6"><button class="w-100 donation-option" data-value="100">R$ 100,00</button></div>
-  <div class="col-6"><button class="w-100 donation-option" data-value="125">R$ 125,00</button></div>
-  <div class="col-6"><button class="w-100 donation-option" data-value="150">R$ 150,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="200">R$ 200,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="250">R$ 250,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="300">R$ 300,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="500">R$ 500,00</button></div>
+  <div class="col-6"><button class="w-100 donation-option" data-value="1000">R$ 1.000,00</button></div>
 </div>
 </div>
 
@@ -606,7 +606,6 @@ src="https://www.facebook.com/tr?id=613723188089930&ev=PageView&noscript=1"
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
-  // Mostra o modal com QR e código copia-e-cola
   function showPixModal(payload) {
     const container = document.getElementById('pix-qrcode-container');
     container.innerHTML = '';
@@ -618,7 +617,6 @@ src="https://www.facebook.com/tr?id=613723188089930&ev=PageView&noscript=1"
     modal.show();
   }
 
-  // Chama a Function no Netlify
   async function createPixChargeReal(amount) {
     try {
       const resp = await fetch('/api/pix/emit', {
@@ -639,7 +637,6 @@ src="https://www.facebook.com/tr?id=613723188089930&ev=PageView&noscript=1"
     }
   }
 
-  // Clique nos botões
   document.addEventListener('click', (ev) => {
     const btn = ev.target.closest('.donation-option[data-value]');
     if (!btn) return;
@@ -648,7 +645,6 @@ src="https://www.facebook.com/tr?id=613723188089930&ev=PageView&noscript=1"
     createPixChargeReal(amount);
   });
 
-  // Copiar código Pix
   function copyPixCode() {
     const text = document.getElementById('pix-code').textContent.trim();
     navigator.clipboard.writeText(text)
@@ -656,6 +652,7 @@ src="https://www.facebook.com/tr?id=613723188089930&ev=PageView&noscript=1"
       .catch(() => alert('Não foi possível copiar automaticamente.'));
   }
 </script>
+
 
 
 
