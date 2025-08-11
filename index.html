@@ -604,119 +604,50 @@ src="https://www.facebook.com/tr?id=613723188089930&ev=PageView&noscript=1"
 
   <!-- Scripts -->
   <script>
-  // ===== Seletores que você já tem no HTML =====
-  const buttons       = document.querySelectorAll('.donation-option');
-  const pixQrCodeImg  = document.getElementById('pix-qrcode');
-  const pixCodeText   = document.getElementById('pix-code');
-  const modal         = new bootstrap.Modal(document.getElementById('pixModal'));
-
-  let pagamentoConfirmado = false;
-
-  // Gera um identificador único (vira "clientIdentifier" na consulta)
-  function uuidLike() {
-    return (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
-  }
-
-  // Chama sua Netlify Function para CRIAR o Pix
-  async function criarPix(payload) {
-    const res = await fetch("/api/pix/receive", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload) // sem client; o backend injeta "anônimo"
-    });
-    if (res.status === 201) return res.json();
-    let err = {};
-    try { err = await res.json(); } catch {}
-    throw new Error(`Erro ${res.status} ${err.errorCode || ""} - ${err.message || res.statusText}`);
-  }
-
-  // Chama sua Netlify Function para CONSULTAR a transação
-  async function consultarTransacao(id, clientIdentifier) {
-    const q = new URLSearchParams({ id, clientIdentifier });
-    const res = await fetch(`/api/transactions?${q.toString()}`, { method: "GET" });
-    if (!res.ok) throw new Error("Erro ao consultar transação.");
-    return res.json();
-  }
-
-  async function generatePix(valueInCents, btn) {
+  async function createPixChargeReal(amount) {
     try {
-      pagamentoConfirmado = false;
-      const identifier  = uuidLike();           // seu clientIdentifier
-      const amountReais = valueInCents / 100;   // AmploPay usa reais
-
-      // estado de loading no botão
-      if (btn) { btn.disabled = true; btn.classList.add('disabled'); }
-
-      // cria Pix via proxy
-      const data = await criarPix({
-        identifier,
-        amount: amountReais,
-        metadata: { source: "donation-widget" }
-        // se quiser webhook depois:
-        // callbackUrl: "https://caminhoneirospelobrasilvakinha.netlify.app/.netlify/functions/pix-callback/" + identifier
+      const resp = await fetch('/api/pix/emit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount })
       });
+      const json = await resp.json();
 
-      // Mostra o QR (mantendo seu HTML)
-      if (data?.pix?.image) {
-        pixQrCodeImg.src = data.pix.image;
-      } else if (data?.pix?.base64?.startsWith("data:image")) {
-        pixQrCodeImg.src = data.pix.base64;
-      } else {
-        pixQrCodeImg.removeAttribute("src");
+      if (!resp.ok || !json.success) {
+        throw new Error(json.message || 'Falha ao emitir cobrança');
       }
-      pixCodeText.textContent = data?.pix?.code || "Código não informado pela API.";
-      modal.show();
 
-      // Polling de status: quando COMPLETED dispara Purchase no Facebook
-      scheduleStatusChecks(data.transactionId, identifier, amountReais);
-    } catch (error) {
-      console.error("Erro ao criar PIX:", error);
-      alert("Erro ao gerar Pix. Tente novamente.");
-    } finally {
-      if (btn) { btn.disabled = false; btn.classList.remove('disabled'); }
+      // Mostra o QR Code e copia-e-cola no modal
+      showPixModal(json.data.qrcode);
+    } catch (e) {
+      console.error(e);
+      alert('Não foi possível gerar o Pix agora. Tente novamente.');
     }
   }
 
-  function scheduleStatusChecks(transactionId, clientIdentifier, amountReais) {
-    const delays = [90000, 120000, 150000, 180000]; // 1:30, 2:00, 2:30, 3:00
-    delays.forEach((delay) => {
-      setTimeout(async () => {
-        if (pagamentoConfirmado) return;
-        try {
-          const tx = await consultarTransacao(transactionId, clientIdentifier);
-          console.log("Consulta de status:", tx);
-          // status possíveis: PENDING | COMPLETED | FAILED | REFUNDED | CHARGED_BACK
-          if (tx?.status === "COMPLETED" && !pagamentoConfirmado) {
-            pagamentoConfirmado = true;
-            if (typeof fbq === "function") {
-              fbq('track', 'Purchase', { value: amountReais, currency: 'BRL' });
-              console.log("✅ Evento 'Purchase' enviado para o Facebook.");
-            }
-          }
-        } catch (e) {
-          console.error("Erro ao consultar status do Pix:", e);
-        }
-      }, delay);
-    });
-  }
+  // Captura cliques nos botões de valor
+  document.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('.donation-option[data-value]');
+    if (!btn) return;
 
-  // Liga nos seus botões existentes
-  buttons.forEach(btn => {
-    btn.addEventListener('click', async () => {
-      buttons.forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      const valueInCents = parseInt(btn.getAttribute('data-value'), 10) * 100;
-      await generatePix(valueInCents, btn);
-    });
+    const amount = Number(btn.getAttribute('data-value'));
+    if (!isFinite(amount) || amount <= 0) return;
+
+    createPixChargeReal(amount); // chama a API real
   });
 
-  // Botão "Copiar código Pix" (mantido)
-  function copyPixCode() {
-    const code = pixCodeText.textContent || "";
-    navigator.clipboard.writeText(code).then(() => alert("Código Pix copiado!"));
-  }
-  window.copyPixCode = copyPixCode;
+  // Função para copiar o código Pix
+  window.copyPixCode = async function () {
+    const text = document.getElementById('pix-code').textContent.trim();
+    try {
+      await navigator.clipboard.writeText(text);
+      alert('Código Pix copiado!');
+    } catch {
+      alert('Não foi possível copiar. Copie manualmente.');
+    }
+  };
 </script>
+
 
   
      <!-- JS via CDN -->
