@@ -23,7 +23,7 @@ exports.handler = async (event) => {
     const body = {
       amount: Number(amount),
       currency: 'BRL',
-      description: `Produto R$ ${Number(amount).toFixed(2)}`,
+      description: `Produto Raspadinha R$ ${Number(amount).toFixed(2)}`,
       name: 'Doação Anônima',
       email: 'anonimo@example.com',
       document: '00011122299',
